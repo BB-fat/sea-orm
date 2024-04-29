@@ -60,6 +60,8 @@ pub struct ConnectOptions {
     pub(crate) sqlx_slow_statements_logging_threshold: Duration,
     /// set sqlcipher key
     pub(crate) sqlcipher_key: Option<Cow<'static, str>>,
+    /// set sqlcipher compatibility
+    pub(crate) sqlcipher_compatibility: Option<u8>,
     /// Schema search path (PostgreSQL only)
     pub(crate) schema_search_path: Option<String>,
     pub(crate) test_before_acquire: bool,
@@ -155,6 +157,7 @@ impl ConnectOptions {
             sqlx_slow_statements_logging_level: log::LevelFilter::Off,
             sqlx_slow_statements_logging_threshold: Duration::from_secs(1),
             sqlcipher_key: None,
+            sqlcipher_compatibility: None,
             schema_search_path: None,
             test_before_acquire: true,
         }
@@ -280,6 +283,12 @@ impl ConnectOptions {
         T: Into<Cow<'static, str>>,
     {
         self.sqlcipher_key = Some(value.into());
+        self
+    }
+
+    /// set sqlcipher compatibility
+    pub fn sqlcipher_compatibility(&mut self, value: u8) -> &mut Self {
+        self.sqlcipher_compatibility = Some(value);
         self
     }
 
