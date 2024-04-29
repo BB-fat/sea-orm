@@ -53,6 +53,9 @@ impl SqlxSqliteConnector {
         if let Some(sqlcipher_key) = &options.sqlcipher_key {
             opt = opt.pragma("key", sqlcipher_key.clone());
         }
+        if let Some(sqlcipher_compatibility) = &options.sqlcipher_compatibility {
+            opt = opt.pragma("cipher_compatibility", sqlcipher_compatibility.to_string());
+        }
         use sqlx::ConnectOptions;
         if !options.sqlx_logging {
             opt = opt.disable_statement_logging();
